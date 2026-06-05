@@ -3,13 +3,24 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: MEDX - Medical Education and Development Exchange API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: events
+    description: MEDX events and workshops
+  - name: team
+    description: Team members and leadership
+  - name: programs
+    description: Educational programs and initiatives
+  - name: contact
+    description: Contact and newsletter
+  - name: stats
+    description: Organization statistics
+
 paths:
   /healthz:
     get:
@@ -24,6 +35,192 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      summary: List all events
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+    post:
+      operationId: createEvent
+      tags: [events]
+      summary: Create an event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+
+  /events/upcoming:
+    get:
+      operationId: listUpcomingEvents
+      tags: [events]
+      summary: List upcoming events
+      responses:
+        "200":
+          description: Upcoming events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+
+  /events/{id}:
+    get:
+      operationId: getEvent
+      tags: [events]
+      summary: Get event by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "404":
+          description: Not found
+
+  /team:
+    get:
+      operationId: listTeamMembers
+      tags: [team]
+      summary: List all team members
+      responses:
+        "200":
+          description: List of team members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamMember"
+
+  /team/leadership:
+    get:
+      operationId: listLeadership
+      tags: [team]
+      summary: List leadership team members
+      responses:
+        "200":
+          description: Leadership team
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamMember"
+
+  /programs:
+    get:
+      operationId: listPrograms
+      tags: [programs]
+      summary: List all programs
+      responses:
+        "200":
+          description: List of programs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Program"
+
+  /programs/{id}:
+    get:
+      operationId: getProgram
+      tags: [programs]
+      summary: Get program by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Program
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Program"
+        "404":
+          description: Not found
+
+  /contact:
+    post:
+      operationId: submitContact
+      tags: [contact]
+      summary: Submit a contact form message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInput"
+      responses:
+        "201":
+          description: Submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSubmission"
+
+  /newsletter:
+    post:
+      operationId: subscribeNewsletter
+      tags: [contact]
+      summary: Subscribe to newsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsletterInput"
+      responses:
+        "201":
+          description: Subscribed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsletterSubscription"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [stats]
+      summary: Get organization statistics
+      responses:
+        "200":
+          description: Stats summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrgStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +231,162 @@ components:
       required:
         - status
 
+    Event:
+      type: object
+      required: [id, title, date, location, category, description]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+        location:
+          type: string
+        category:
+          type: string
+          enum: [workshop, seminar, webinar, competition, social, conference]
+        imageUrl:
+          type: ["string", "null"]
+        registrationUrl:
+          type: ["string", "null"]
+        isUpcoming:
+          type: boolean
+
+    EventInput:
+      type: object
+      required: [title, date, location, category, description]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+        location:
+          type: string
+        category:
+          type: string
+          enum: [workshop, seminar, webinar, competition, social, conference]
+        imageUrl:
+          type: ["string", "null"]
+        registrationUrl:
+          type: ["string", "null"]
+
+    TeamMember:
+      type: object
+      required: [id, name, role, bio, isLeadership]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        bio:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        linkedinUrl:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        isLeadership:
+          type: boolean
+        department:
+          type: string
+
+    Program:
+      type: object
+      required: [id, title, description, category]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+          enum: [education, research, mentorship, empowerment, outreach]
+        icon:
+          type: ["string", "null"]
+        benefits:
+          type: array
+          items:
+            type: string
+
+    ContactInput:
+      type: object
+      required: [name, email, message]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        subject:
+          type: ["string", "null"]
+        message:
+          type: string
+
+    ContactSubmission:
+      type: object
+      required: [id, name, email, message, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: ["string", "null"]
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    NewsletterInput:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: ["string", "null"]
+
+    NewsletterSubscription:
+      type: object
+      required: [id, email, subscribedAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: ["string", "null"]
+        subscribedAt:
+          type: string
+          format: date-time
+
+    OrgStats:
+      type: object
+      required: [totalMembers, totalEvents, totalPrograms, totalCountries]
+      properties:
+        totalMembers:
+          type: integer
+        totalEvents:
+          type: integer
+        totalPrograms:
+          type: integer
+        totalCountries:
+          type: integer
+        upcomingEventsCount:
+          type: integer
