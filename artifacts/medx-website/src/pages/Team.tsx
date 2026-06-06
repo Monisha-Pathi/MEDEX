@@ -64,10 +64,12 @@ function MemberCard({ member, featured = false }: { member: any; featured?: bool
 }
 
 export default function Team() {
-  const { data: leadership, isLoading: loadingLeadership } = useListLeadership();
-  const { data: allMembers, isLoading: loadingAll } = useListTeamMembers();
+  const { data: leadershipData, isLoading: loadingLeadership } = useListLeadership();
+  const { data: allMembersData, isLoading: loadingAll } = useListTeamMembers();
 
-  const nonLeadership = allMembers?.filter((m) => !m.isLeadership) || [];
+  const leadership = Array.isArray(leadershipData) ? leadershipData : [];
+  const allMembers = Array.isArray(allMembersData) ? allMembersData : [];
+  const nonLeadership = allMembers.filter((m) => !m.isLeadership);
 
   return (
     <div className="pt-20">

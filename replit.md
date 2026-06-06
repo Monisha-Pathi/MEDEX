@@ -1,10 +1,11 @@
-# [Project name]
+# MEDX — Medical Education & Development Exchange
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Website for a student-led medical education organization: programs, events, leadership team, contact, and newsletter.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `PORT=19761 BASE_PATH=/ pnpm --filter @workspace/medx-website run dev` — website (port 19761)
+- `DATABASE_URL=... PORT=8080 pnpm --filter @workspace/api-server run dev` — API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -14,32 +15,23 @@ _Replace the heading above with the project's name, and this line with one sente
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Frontend: React, Vite, Tailwind, Wouter, TanStack Query
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Build: esbuild (API bundle)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
-
-## Architecture decisions
-
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
-
-## Product
-
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- `artifacts/medx-website` — public website
+- `artifacts/api-server` — REST API under `/api`
+- `lib/api-spec/openapi.yaml` — API contract (source of truth)
+- `lib/db/src/schema` — database schema
+- `attached_assets` — static images referenced by the site
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- `PORT` and `BASE_PATH` env vars are required to run the Vite dev server.
+- Local dev proxies `/api` to `http://localhost:8080` (see `artifacts/medx-website/vite.config.ts`).
+- On macOS/Linux local machines, darwin/linux native optional deps must not be excluded in `pnpm-workspace.yaml` overrides.

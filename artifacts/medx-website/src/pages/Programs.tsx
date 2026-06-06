@@ -26,7 +26,8 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function Programs() {
-  const { data: programs, isLoading } = useListPrograms();
+  const { data: programsData, isLoading } = useListPrograms();
+  const programs = Array.isArray(programsData) ? programsData : [];
 
   return (
     <div className="pt-20">
@@ -59,7 +60,7 @@ export default function Programs() {
                 </div>
               ))}
             </div>
-          ) : programs && programs.length > 0 ? (
+          ) : programs.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {programs.map((program) => {
                 const Icon = iconMap[program.icon || "BookOpen"] || BookOpen;

@@ -27,9 +27,12 @@ const categoryColors: Record<string, string> = {
 
 export default function Home() {
   const { data: stats } = useGetStats();
-  const { data: upcomingEvents } = useListUpcomingEvents();
-  const { data: programs } = useListPrograms();
-  const { data: leadership } = useListLeadership();
+  const { data: upcomingEventsData } = useListUpcomingEvents();
+  const { data: programsData } = useListPrograms();
+  const { data: leadershipData } = useListLeadership();
+  const upcomingEvents = Array.isArray(upcomingEventsData) ? upcomingEventsData : [];
+  const programs = Array.isArray(programsData) ? programsData : [];
+  const leadership = Array.isArray(leadershipData) ? leadershipData : [];
   const subscribeNewsletter = useSubscribeNewsletter();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
@@ -133,7 +136,7 @@ export default function Home() {
             title="Upcoming Opportunities"
             subtitle="Join workshops, seminars, and competitions designed to accelerate your growth as a medical student and future physician."
           />
-          {upcomingEvents && upcomingEvents.length > 0 ? (
+          {upcomingEvents.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
               {upcomingEvents.slice(0, 3).map((event) => (
                 <div
@@ -176,7 +179,7 @@ export default function Home() {
             title="Programs & Initiatives"
             subtitle="From research mentorship to global health outreach, MEDX offers structured programs designed to complement your medical education."
           />
-          {programs && (
+          {programs.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
               {programs.slice(0, 6).map((program, i) => (
                 <div
@@ -252,7 +255,7 @@ export default function Home() {
       </section>
 
       {/* Leadership Snapshot */}
-      {leadership && leadership.length > 0 && (
+      {leadership.length > 0 && (
         <section className="py-24 bg-background" data-testid="section-leadership">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader

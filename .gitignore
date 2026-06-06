@@ -47,3 +47,11 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# pnpm
+.pnpm-store/
+
+# env
+.env
+.env.*
+!.env.example

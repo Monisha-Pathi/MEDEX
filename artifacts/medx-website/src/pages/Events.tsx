@@ -71,12 +71,14 @@ function EventCard({ event, upcoming = false }: { event: any; upcoming?: boolean
 }
 
 export default function Events() {
-  const { data: allEvents, isLoading } = useListEvents();
-  const { data: upcomingEvents } = useListUpcomingEvents();
+  const { data: allEventsData, isLoading } = useListEvents();
+  const { data: upcomingEventsData } = useListUpcomingEvents();
   const [filter, setFilter] = useState("all");
 
-  const pastEvents = allEvents?.filter((e) => !e.isUpcoming) || [];
-  const filteredUpcoming = upcomingEvents?.filter((e) => filter === "all" || e.category === filter) || [];
+  const allEvents = Array.isArray(allEventsData) ? allEventsData : [];
+  const upcomingEvents = Array.isArray(upcomingEventsData) ? upcomingEventsData : [];
+  const pastEvents = allEvents.filter((e) => !e.isUpcoming);
+  const filteredUpcoming = upcomingEvents.filter((e) => filter === "all" || e.category === filter);
   const filteredPast = pastEvents.filter((e) => filter === "all" || e.category === filter);
 
   return (
