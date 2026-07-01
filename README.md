@@ -1,7 +1,5 @@
 # MEDX — Medical Education & Development Exchange
 
-Student-led organization website for programs, events, team, and contact — built with React, Express, and PostgreSQL.
-
 ## Quick start
 
 **Prerequisites:** Node.js 24+, pnpm, PostgreSQL (optional for frontend-only preview)
