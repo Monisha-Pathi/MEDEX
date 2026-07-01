@@ -4,9 +4,10 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "name": "Launch website",
       "url": "http://localhost:19761",
-      "webRoot": "${workspaceFolder}/artifacts/medx-website"
+      "webRoot": "${workspaceFolder}/apps/website",
+      "preLaunchTask": "dev:website"
     }
   ]
 }
