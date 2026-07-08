@@ -2,5 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "pnpm -r --filter @workspace/website run build",
   "outputDirectory": "apps/website/dist/public",
-  "framework": "vite"
+  "framework": "vite",
+  "installCommand": "pnpm install --no-frozen-lockfile"
 }
