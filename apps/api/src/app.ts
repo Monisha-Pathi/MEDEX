@@ -1,3 +1,13 @@
+/**
+ * Real API server — requires PostgreSQL (DATABASE_URL) and a working
+ * database connection.  For frontend development without a database,
+ * use the mock server instead:
+ *
+ *   pnpm run dev:mock
+ *
+ * @see apps/api/mock-server.mjs
+ */
+
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";

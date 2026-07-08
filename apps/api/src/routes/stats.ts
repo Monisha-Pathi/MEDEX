@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
     totalMembers: Number(membersCount.count),
     totalEvents: Number(eventsCount.count),
     totalPrograms: Number(programsCount.count),
-    totalCountries: 12,
+    totalCountries: 12, // TODO: compute from database once countries column exists
     upcomingEventsCount: Number(upcomingCount.count),
   });
 });

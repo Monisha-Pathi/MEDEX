@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { eventsTable } from "@workspace/db";
 import { eq, gte } from "drizzle-orm";
+import { CreateEventBody } from "@workspace/api-zod";
 
 const router = Router();
 
@@ -25,21 +26,25 @@ router.get("/upcoming", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
   const [event] = await db.select().from(eventsTable).where(eq(eventsTable.id, id));
   if (!event) return res.status(404).json({ error: "Event not found" });
-  res.json({ ...event, date: event.date.toISOString() });
+  return res.json({ ...event, date: event.date.toISOString() });
 });
 
 router.post("/", async (req, res) => {
-  const { title, description, date, location, category, imageUrl, registrationUrl } = req.body;
+  const parsed = CreateEventBody.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.flatten() });
+  }
+  const { title, description, date, location, category, imageUrl, registrationUrl } = parsed.data;
   const [event] = await db.insert(eventsTable).values({
     title, description, date: new Date(date), location, category,
     imageUrl: imageUrl ?? null,
     registrationUrl: registrationUrl ?? null,
     isUpcoming: new Date(date) >= new Date(),
   }).returning();
-  res.status(201).json({ ...event, date: event.date.toISOString() });
+  return res.status(201).json({ ...event, date: event.date.toISOString() });
 });
 
 export default router;

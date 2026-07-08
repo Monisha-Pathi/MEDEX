@@ -181,7 +181,7 @@ export default function Home() {
           />
           {programs.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-              {programs.slice(0, 6).map((program, i) => (
+              {programs.slice(0, 6).map((program) => (
                 <div
                   key={program.id}
                   className="bg-card rounded-xl border border-card-border p-6 hover:shadow-md hover:border-secondary/40 transition-all group"

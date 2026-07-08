@@ -11,10 +11,10 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
   const [program] = await db.select().from(programsTable).where(eq(programsTable.id, id));
   if (!program) return res.status(404).json({ error: "Program not found" });
-  res.json(program);
+  return res.json(program);
 });
 
 export default router;

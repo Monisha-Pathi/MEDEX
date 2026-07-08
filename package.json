@@ -6,6 +6,7 @@
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
     "dev": "PORT=19761 BASE_PATH=/ pnpm --filter @workspace/website run dev",
     "dev:api": "PORT=8080 pnpm --filter @workspace/api run dev",
+    "dev:mock": "PORT=19761 BASE_PATH=/ pnpm --filter @workspace/website run dev & PORT=8080 pnpm --filter @workspace/api run mock; wait",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./apps/**\" --if-present run typecheck"
