@@ -53,7 +53,7 @@ const globalOfficersData = [
   {
     group: "Web-Developers",
     members: [
-      { name: "Shanmuka", role: "Director Tech & Web Development", affiliation: "USA" },
+      { name: "Shanmuka", role: "Chief Technology Officer", affiliation: "USA" },
       { name: "Monisha", role: "Manager Tech & Web Development", affiliation: "USA" },
     ],
   },
